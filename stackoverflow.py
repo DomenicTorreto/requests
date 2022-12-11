@@ -7,10 +7,18 @@ def questions(tag: str):
     params = {'fromdate': round(time.time() - 172800),
               'todate': round(time.time()),
               'tagged': tag,
-              'site': "stackoverflow"}
-    response = requests.get(url, params=params)
-    questions_list = [items_list['link'] for items_list in response.json()['items']]
-    return questions_list
+              'site': "stackoverflow",
+              'pagesize': 100,
+              'page': 1
+              }
+    questions_list = []
+    while True:
+        response = requests.get(url, params=params)
+        params['page'] += 1
+        for items_list in response.json()['items']:
+            questions_list.append(items_list['link'])
+            if not response.json()["has_more"]:
+                return questions_list
 
 
-print(questions('Python'))
+print(len(questions('Python')))
