@@ -17,8 +17,8 @@ def questions(tag: str):
         params['page'] += 1
         for items_list in response.json()['items']:
             questions_list.append(items_list['link'])
-            if not response.json()["has_more"]:
-                return questions_list
+        if not response.json()["has_more"]:
+            return questions_list
 
 
 print(len(questions('Python')))
